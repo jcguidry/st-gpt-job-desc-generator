@@ -1,3 +1,4 @@
 gpt-streamlit-env
 .env
-__pycache__/*
+.DS_Store
+.notebook

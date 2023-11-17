@@ -2,7 +2,7 @@ import streamlit as st
 import openai
 import time
 import os
-from openai_st import stream
+from src.openai_st import stream
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
