@@ -81,17 +81,16 @@ if st.button("Generate", type="primary"):
 
         messages_primary_prompt = messages[1]['content']
         
-        # perform similarity search on the job description prompt
-        document_context = Retriever().retrieve(messages_primary_prompt, k=1) 
-        st.header("Document Context")
-        st.write(document_context)
-        
+        if use_rag:
+            # perform similarity search on the job description prompt
+            document_context = Retriever().retrieve(messages_primary_prompt, k=1) 
+            st.header("Document Context")
+            st.write(document_context)
+            messages = appendMessageHistoryContext(messages, document_context)
+
         st.divider()
         st.header("Job Description")
         
-        if use_rag:
-            messages = appendMessageHistoryContext(messages, document_context)
-
         # Create a placeholder for the output
         box = st.empty()
 
