@@ -45,10 +45,6 @@ def generate_job_description_prompt(company, title, location, requirements, tone
     return messages
 
 
-# # For testing
-# generate_job_description('infosys', 'data science consultant', 'Dallas, TX', 'demand forecasting')
-
-
 # Create the app
 st.set_page_config(page_title='Job Description Generator', page_icon=':robot_face:')
 st.title("Job Description Generator")
@@ -60,17 +56,16 @@ model_id = model_id_lookup[model_type]
 
 use_rag = st.toggle("Use RAG", value=False)
 
-# Variables for prompt
 company_name = st.text_input("Company Name", value="Molina Healthcare")
 job_title = st.text_input("Job Title", value="Senior Provider Data Management Analyst")
 location = st.text_input("Location", value="Long Beach, CA")
 key_requirements = st.text_area("Key Requirements", value="Bachelors degree in related field, Experience with Master Data Management, Relational Database knowledge, Python, SQL")
 tone = st.text_input("Tone", value="Professional")
 
-# salary_range = st.slider("Salary Range", min_value=0, max_value=200000, value=(50000, 100000), step=1000, format="$%d")
-salary_range_min = st.number_input("Minimum Salary", 73102)
-salary_range_max = st.number_input("Maximum Salary", 142549)
-salary_range = f'${salary_range_min} - ${salary_range_max} per year'
+salary_range_slider = st.slider("Salary Range", min_value=0, max_value=250000, value=(73000, 142000), step=1000, format="$%d")
+salary_range_min = str(salary_range_slider[0])
+salary_range_max = str(salary_range_slider[1])
+salary_range = "$"+salary_range_min+" - $"+salary_range_max+" per year"
 
 # On "Generate" button click
 if st.button("Generate", type="primary"):
@@ -83,9 +78,9 @@ if st.button("Generate", type="primary"):
         
         if use_rag:
             # perform similarity search on the job description prompt
-            document_context = Retriever().retrieve(messages_primary_prompt, k=1) 
+            document_context = Retriever().retrieve(messages_primary_prompt, k=10) 
             st.header("Document Context")
-            st.write(document_context)
+            st.markdown(document_context)
             messages = appendMessageHistoryContext(messages, document_context)
 
         st.divider()

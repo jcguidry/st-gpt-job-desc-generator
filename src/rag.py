@@ -14,7 +14,7 @@ class Retriever:
 
     def retrieve(self, query, k=1):
         doc_chunks = self.index.similarity_search(query, k=k)
-        doc_chunks_list_of_str = [i.page_content for i in doc_chunks]
+        doc_chunks_list_of_str = [" - "+i.page_content for i in doc_chunks]
         return "\n".join(doc_chunks_list_of_str) 
     
 
