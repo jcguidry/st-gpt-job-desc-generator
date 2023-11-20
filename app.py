@@ -41,6 +41,8 @@ model_type = st.selectbox("Model Type", options=["GPT-3.5 (faster)", "GPT-4 (sma
 model_id_lookup = {"GPT-3.5 (faster)": "gpt-3.5-turbo", "GPT-4 (smarter)": "gpt-4-0314"}
 model_id = model_id_lookup[model_type]
 
+use_rag = st.toggle("Use RAG", value=False)
+
 # Variables for prompt
 company_name = st.text_input("Company Name", value="Infosys Consulting")
 job_title = st.text_input("Job Title", value="Data Science Consultant - AI & Automation Practice")
@@ -55,10 +57,18 @@ if st.button("Generate", type="primary"):
         # Call the function to generate a job description
         messages = generate_job_description_prompt(company_name, job_title, location, key_requirements)
 
-        # document_context = Retriever().retrieve(messages[1]['content'], k=1) # perform similarity search on the job description prompt
-        # st.write(document_context)
-
-        # messages = appendMessageHistoryContext(messages, document_context)
+        messages_primary_prompt = messages[1]['content']
+        
+        # perform similarity search on the job description prompt
+        document_context = Retriever().retrieve(messages_primary_prompt, k=1) 
+        st.header("Document Context")
+        st.write(document_context)
+        
+        st.divider()
+        st.header("Job Description")
+        
+        if use_rag:
+            messages = appendMessageHistoryContext(messages, document_context)
 
         # Create a placeholder for the output
         box = st.empty()

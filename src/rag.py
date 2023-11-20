@@ -9,7 +9,7 @@ class Retriever:
     def __init__(self):
         key = os.getenv('OPENAI_API_KEY')
         embedding = OpenAIEmbeddings(openai_api_key=key)
-        self.index = FAISS.load_local('../rag-data/indexed/pdf_index', embedding)
+        self.index = FAISS.load_local('rag-data/indexed/pdf_index', embedding)
 
 
     def retrieve(self, query, k=1):
@@ -22,11 +22,11 @@ class Retriever:
 # Retriever().retrieve('mission', k=1)
 
 
-def appendMessageHistoryContext(messages, new_context):
+def appendMessageHistoryContext(messages:list, new_context:str):
     ''' adds RAG context to the message history '''
 
-    prompt = "Please consider the following context:\n{new_context}"
-    new_message = {"role": "user", "content": prompt},
+    prompt = f"Please consider the following context:\n{new_context}"
+    new_message = {"role": "user", "content": prompt}
 
-    return messages + new_message
+    return messages+[new_message]
 
