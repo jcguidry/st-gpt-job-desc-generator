@@ -3,6 +3,7 @@ import openai
 import time
 import os
 from src.openai_st import stream
+from src.rag import Retriever, appendMessageHistoryContext
 
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -25,6 +26,7 @@ def generate_job_description_prompt(company, title, location, requirements):
         ]
 
     return messages
+
 
 # # For testing
 # generate_job_description('infosys', 'data science consultant', 'Dallas, TX', 'demand forecasting')
@@ -51,13 +53,18 @@ if st.button("Generate", type="primary"):
     if company_name and job_title and location and key_requirements:
         
         # Call the function to generate a job description
-        prompt = generate_job_description_prompt(company_name, job_title, location, key_requirements)
+        messages = generate_job_description_prompt(company_name, job_title, location, key_requirements)
+
+        # document_context = Retriever().retrieve(messages[1]['content'], k=1) # perform similarity search on the job description prompt
+        # st.write(document_context)
+
+        # messages = appendMessageHistoryContext(messages, document_context)
 
         # Create a placeholder for the output
         box = st.empty()
 
         # Call openai in streaming fashion
-        stream(model=model_id, prompt=prompt, box=box)
+        stream(model=model_id, prompt=messages, box=box)
         current_text = stream.s
 
         st.download_button('Download as text file', current_text , file_name=f'Job Description - {job_title}.txt', mime='text/plain')
