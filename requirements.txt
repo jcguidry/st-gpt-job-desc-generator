@@ -6,3 +6,6 @@ openai==0.28.1
 streamlit==1.28.2
 protobuf==3.20.0
 ipykernel
+faiss-cpu
+langchain
+pypdf
