@@ -55,7 +55,7 @@ jobs:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           mask-inputs: true
           general-settings-json: '{"linuxFxVersion": "PYTHON|${{ env.PYTHON_VERSION }}"}'
-          app-settings-json: '{"OPENAI_API_KEY": "${{ secrets.OPENAI_API_KEY }}"}'
+          app-settings-json: '{"OPENAI_API_KEY": ${{ secrets.OPENAI_API_KEY }}}'
   
     - uses: azure/webapps-deploy@v2
       with:
