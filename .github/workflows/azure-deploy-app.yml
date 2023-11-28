@@ -46,6 +46,7 @@ jobs:
                            --plan ASP-LLM-Demos-1-01 \
                            --name ${{ env.AZURE_WEBAPP_NAME }} \
                            --runtime "PYTHON:${{ env.PYTHON_VERSION }}"
+          sleep 120
         fi
 
 
