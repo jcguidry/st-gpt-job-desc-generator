@@ -6,31 +6,33 @@
 # Parameters
 SERVICE_PRINCIPAL_NAME="AI_IC_LLM_Demos-1-Deployment-SP"
 ROLE="Contributor" 
-SUBSCRIPTION_ID="xxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+SUBSCRIPTION_ID="dda1b514-139b-4eb2-8191-20a31a14d873"
 RESOURCE_GROUP_NAME="AI_IC_LLM_Demos-1"
 
 # Azure Login (Uncomment if on local machine)
 # az login
 
-# Create Service Principal with limited scope
-SERVICE_PRINCIPAL=$(az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME --role $ROLE --scopes /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP_NAME)
 
-# Output the result
-echo "Service Principal Created:"
-echo $SERVICE_PRINCIPAL
+az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME \
+                            --role $ROLE \
+                            --scopes /subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RESOURCE_GROUP_NAME \
+                            --sdk-auth
+                            
 
 
 # Result will look like this:
-# { 
-#     "appId": "xxxx", 
-#     "displayName": "xxxx", 
-#     "password": "xxxx", 
-#     "tenant": "xxxx"
-# }
+{
+  "clientId": "xxx",
+  "clientSecret": "xxx",
+  "subscriptionId": "xxx",
+  "tenantId": "xxx",
+  "activeDirectoryEndpointUrl": "xxx",
+  "resourceManagerEndpointUrl": "xxx",
+  "activeDirectoryGraphResourceId": "xxx",
+  "sqlManagementEndpointUrl": "xxx",
+  "galleryEndpointUrl": "xxx",
+  "managementEndpointUrl": "xxx""
+}
 
 # In Github Secrets, you must set:
-# AZURE_CLIENT_ID = appId.
-# AZURE_CLIENT_SECRET = password.
-# AZURE_TENANT_ID = tenant.
-
-# Make sure to use quotes around the values in Github Secrets.
+# AZURE_CREDENTIALS: The JSON output from the above command.
