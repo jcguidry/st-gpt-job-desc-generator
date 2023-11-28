@@ -19,5 +19,5 @@ def stream(model, prompt, box):
                 break
             for c in chunk['choices'][0]['delta']['content']:
                 stream.s += c
-                time.sleep(.002)
+                time.sleep(.005)
                 box.write(stream.s)

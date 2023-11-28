@@ -1,0 +1,68 @@
+
+name: Deploy Python package to Azure Web App as a Linux web app.
+on:
+  [push]
+# CONFIGURATION
+# See this in-depth article on CI for Python applications: https://azure.github.io/AppService/2020/12/11/cicd-for-python-apps.html
+#
+# 1. Set up the secrets in your repository:
+#   - AZURE_CLIENT_ID
+#   - AZURE_CLIENT_SECRET
+#   - AZURE_TENANT_ID
+# Obtain these with scripts/create-az-service-acct.sh
+
+# 2. Change these variables for your configuration:
+env:
+  AZURE_WEBAPP_NAME: LLM-Job-Desc-Generator-1     # set this to your application's name
+  WORKING_DIRECTORY: '.'        # set this to the path to your path of working directory inside github repository, defaults to the repository root
+  PYTHON_VERSION: '3.8'        # set the version to use
+  ENV_NAME: 'gpt-streamlit-env'           # your virtual environment name
+  STARTUP_COMMAND: 'streamlit run app.py'           # set this to the startup command required to start the gunicorn server. default it is empty
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    - name: Python Install
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+      run: |
+        pip install virtualenv
+        virtualenv -p ${{ env.PYTHON_VERSION }} ${{ env.ENV_NAME }}
+        source ${{ env.ENV_NAME }}/bin/activate
+        pip install -r requirements.txt
+
+    - uses: azure/login@v1
+      with:
+        creds: >
+          {
+            "clientId": "${{ secrets.AZURE_CLIENT_ID }}",
+            "clientSecret": "${{ secrets.AZURE_CLIENT_SECRET }}",
+            "tenantId": "${{ secrets.AZURE_TENANT_ID }}"
+          }
+
+
+    - uses: azure/appservice-settings@v1
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        mask-inputs: true
+        general-settings-json: '{"linuxFxVersion": "PYTHON|${{ env.PYTHON_VERSION }}"}'
+        app-settings-json: >
+            {
+                "ENV_VAR_1": "Value1",
+                "ENV_VAR_2": "Value2",
+                "OPENAI_API_KEY": "${{ secrets.OPENAI_API_KEY }}",
+            }
+
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        package: ${{ env.WORKING_DIRECTORY }}
+        startup-command: ${{ env.STARTUP_COMMAND }}
+    - name: Logout
+      run: |
+        az logout
