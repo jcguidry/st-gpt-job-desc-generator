@@ -8,7 +8,7 @@ env:
   PYTHON_VERSION: '3.8'
   ENV_NAME: 'gpt-streamlit-env'
   STARTUP_COMMAND: 'streamlit run app.py'
-  RESOURCE_GROUP: '<your-resource-group>' # Add your Azure Resource Group
+  RESOURCE_GROUP: 'AI_IC_LLM_Demos-1' # Add your Azure Resource Group
 
 jobs:
   build-and-deploy:
