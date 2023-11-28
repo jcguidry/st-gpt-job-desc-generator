@@ -25,8 +25,8 @@ jobs:
       working-directory: ${{ env.WORKING_DIRECTORY }}
       run: |
         pip install virtualenv
-        virtualenv -p ${{ env.PYTHON_VERSION }} ${{ env.ENV_NAME }}
-        source ${{ env.ENV_NAME }}/bin/activate
+        virtualenv -p ${{ env.PYTHON_VERSION }} antenv
+        source antenv/bin/activate
         pip install -r requirements.txt
 
     - uses: azure/login@v1
