@@ -47,7 +47,7 @@ jobs:
                            --name ${{ env.AZURE_WEBAPP_NAME }} \
                            --runtime "PYTHON|${{ env.PYTHON_VERSION }}" \
                            --startup-command "${{ env.STARTUP_COMMAND }}"
-
+        fi
 
 
     - uses: azure/appservice-settings@v1
