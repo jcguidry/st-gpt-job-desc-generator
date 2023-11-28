@@ -16,18 +16,18 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    # - name: Setup Python
-    #   uses: actions/setup-python@v1
-    #   with:
-    #     python-version: ${{ env.PYTHON_VERSION }}
+    - name: Setup Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
 
-    # - name: Python Install
-    #   working-directory: ${{ env.WORKING_DIRECTORY }}
-    #   run: |
-    #     pip install virtualenv
-    #     virtualenv -p ${{ env.PYTHON_VERSION }} ${{ env.ENV_NAME }}
-    #     source ${{ env.ENV_NAME }}/bin/activate
-    #     pip install -r requirements.txt
+    - name: Python Install
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+      run: |
+        pip install virtualenv
+        virtualenv -p ${{ env.PYTHON_VERSION }} ${{ env.ENV_NAME }}
+        source ${{ env.ENV_NAME }}/bin/activate
+        pip install -r requirements.txt
 
     - uses: azure/login@v1
       with:
