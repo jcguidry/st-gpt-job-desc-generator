@@ -56,11 +56,11 @@ jobs:
           mask-inputs: true
           general-settings-json: '{"linuxFxVersion": "PYTHON|${{ env.PYTHON_VERSION }}"}'
           app-settings-json: >
-              {
+              '{
                   "ENV_VAR_1": "Value1",
                   "ENV_VAR_2": "Value2",
                   "OPENAI_API_KEY": "${{ secrets.OPENAI_API_KEY }}",
-              }
+              }'
   
     - uses: azure/webapps-deploy@v2
       with:
