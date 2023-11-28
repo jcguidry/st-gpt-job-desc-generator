@@ -45,7 +45,7 @@ jobs:
           az webapp create --resource-group ${{ env.RESOURCE_GROUP }} \
                            --plan ASP-LLM-Demos-1-01 \
                            --name ${{ env.AZURE_WEBAPP_NAME }} \
-                           --runtime "PYTHON:${{ env.PYTHON_VERSION }}" \
+                           --runtime "PYTHON:${{ env.PYTHON_VERSION }}"
         fi
 
 
