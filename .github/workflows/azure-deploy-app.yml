@@ -6,8 +6,7 @@ env:
   AZURE_WEBAPP_NAME: LLM-Job-Desc-Generator-1
   WORKING_DIRECTORY: '.'
   PYTHON_VERSION: '3.8'
-  ENV_NAME: 'gpt-streamlit-env'
-  STARTUP_COMMAND: 'streamlit run app.py'
+  STARTUP_COMMAND: 'source antenv/bin/activate && streamlit run app.py'
   RESOURCE_GROUP: 'AI_IC_LLM_Demos-1' # Add your Azure Resource Group
 
 jobs:
